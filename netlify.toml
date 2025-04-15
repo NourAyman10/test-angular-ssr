@@ -5,6 +5,7 @@
 [functions]
   directory = "dist/angular-ssr-app/server"
   node_bundler = "esbuild"
+  included_files = ["dist/angular-ssr-app/server/*.mjs"]
 
 [[redirects]]
   from = "/*"
