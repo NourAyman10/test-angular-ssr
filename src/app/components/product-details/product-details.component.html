@@ -1,0 +1,104 @@
+<ion-content class="product-details-container">
+  <!-- Loading state -->
+  <div *ngIf="isLoading" class="loading">
+    <p>Loading product details...</p>
+  </div>
+  
+  <!-- Error state -->
+  <div *ngIf="error" class="error">
+    <p>{{ error }}</p>
+  </div>
+  
+  <!-- Product details -->
+  <div *ngIf="product && !isLoading && !error">
+    <ion-card>
+      <ion-card-header>
+        <div *ngIf="product.brand" class="brand-container">
+          <ion-thumbnail>
+            <img [src]="product.brand.image" [alt]="product.brand.name" />
+          </ion-thumbnail>
+          <h3>{{ product.brand.name }}</h3>
+        </div>
+        <ion-card-title>{{ product.mainData.name }}</ion-card-title>
+      </ion-card-header>
+    </ion-card>
+    
+    <ion-grid>
+      <ion-row>
+        <!-- Product image -->
+        <ion-col size="12" size-md="6">
+          <ion-card *ngIf="product.variantImages && product.variantImages.length > 0">
+            <img [src]="product.variantImages[0].image" [alt]="product.mainData.name" />
+          </ion-card>
+        </ion-col>
+        
+        <!-- Product info -->
+        <ion-col size="12" size-md="6">
+          <ion-card>
+            <ion-card-content>
+              <!-- Price section -->
+              <div class="price-section">
+                <div class="price">
+                  <span class="currency">{{ product.price.currency }}</span>
+                  <span class="amount">{{ product.price.minimumPrice }}</span>
+                </div>
+                <div class="price-vat">
+                  <small>{{ product.price.minimumPriceWithoutVat }} {{ product.price.currency }} (excluding VAT)</small>
+                </div>
+              </div>
+              
+              <!-- Availability -->
+              <ion-badge class="availability-badge ion-margin-top" [color]="product.availability === 'available' ? 'success' : 'danger'">
+                {{ product.availability === 'available' ? 'In Stock' : 'Out of Stock' }}
+              </ion-badge>
+              
+              <!-- Tags -->
+              <div *ngIf="product.tags && product.tags.length > 0" class="ion-margin-top">
+                <h3>Tags:</h3>
+                <div class="tag-container">
+                  <ion-chip *ngFor="let tag of product.tags">
+                    <ion-label>{{ tag.name }}</ion-label>
+                  </ion-chip>
+                </div>
+              </div>
+              
+              <!-- Labels -->
+              <div *ngIf="product.labels && product.labels.lower_left && product.labels.lower_left.length > 0" class="ion-margin-top">
+                <h3>Labels:</h3>
+                <div class="label-container">
+                  <ion-chip *ngFor="let label of product.labels.lower_left" outline>
+                    <ion-label>{{ label.labeldata.name }}</ion-label>
+                  </ion-chip>
+                </div>
+              </div>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    
+    <!-- Product sections -->
+    <ion-card *ngIf="product.sections && product.sections.length > 0">
+      <ion-list>
+        <ion-item *ngFor="let section of product.sections">
+          <ion-label>
+            <h3>{{ section.name }}</h3>
+          </ion-label>
+          <ion-button slot="end" fill="clear" [href]="section.link" target="_blank">
+            View Details
+          </ion-button>
+        </ion-item>
+      </ion-list>
+    </ion-card>
+    
+    <!-- Meta info -->
+    <ion-card>
+      <ion-card-content>
+        <div class="meta-info">
+          <p><strong>Product ID:</strong> {{ product.productId }}</p>
+          <p><strong>Variant ID:</strong> {{ product.variantId }}</p>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content> 
