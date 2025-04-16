@@ -1,13 +1,25 @@
 [build]
   command = "npm run build"
-  publish = "dist/angular-ssr-app"
+  publish = "dist/angular-ssr-app/browser"
   
 [functions]
-  directory = "dist/angular-ssr-app/server"
+  directory = "netlify/functions"
   node_bundler = "esbuild"
-  included_files = ["dist/angular-ssr-app/server/*.mjs"]
+  external_node_modules = ["express"]
+
+[dev]
+  command = "ng serve"
+  port = 4200
+  publish = "dist/angular-ssr-app/browser"
 
 [[redirects]]
   from = "/*"
   to = "/.netlify/functions/server"
+  status = 200
+  force = false
+  conditions = {SSR = true}
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
   status = 200
